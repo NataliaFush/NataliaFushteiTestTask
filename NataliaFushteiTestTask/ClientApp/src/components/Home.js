@@ -6,28 +6,38 @@ const Home = () => {
     const {
         register,
         handleSubmit,
-        formState: {errors}
+        formState: {errors},
+        trigger
     } = useForm();
     const [file, setFile] = useState(null);
+    const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
 
+    const user={
+        email: 'email',
+        file: 'file'
+    }
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
         if (selectedFile && selectedFile.name.endsWith('.docx')) {
             setFile(selectedFile);
             setMessage('');
-        } else {
+        }
+        else {
             setFile(null);
             setMessage('Please select a .docx file');
         }
     };
 
-    const onSubmit = async () => {
+    const startTrigger = async (obj, name) => {
+        console.log('trigger ' + obj)
+        await trigger(name);
+    }
+    const submit = async (data) => {
         if (!file) {
             setMessage('Please select a file');
             return;
         }
-        ;
         const formData = new FormData();
         formData.append('file', file);
     };
@@ -37,13 +47,14 @@ const Home = () => {
             <div>
                 <h1 className={css.label}>Welcome!</h1>
                 <h1 className={css.label}>It is my test task!</h1>
-                <form onSubmit={handleSubmit(onSubmit)} className={css.main}>
+                <form onSubmit={handleSubmit(submit)} className={css.main}>
                     <div className={css.wrap}>
                         <div className={css.message}>
                             <p className={css.instruction}>Enter your email:</p>
                             {errors.email && <p className={css.errorClass}>{errors.email.message}</p>}
                         </div>
                         <input {...register("email", {
+                            onChange: async (event) => await startTrigger(event.target.value, user.email),
                             required: 'Please enter your email',
                             pattern: {
                                 value: /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/,
