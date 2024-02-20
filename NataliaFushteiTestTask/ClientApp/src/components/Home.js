@@ -1,26 +1,71 @@
-import React, { Component } from 'react';
+import React, {useState} from 'react';
+import css from './home.module.css';
+import {useForm} from "react-hook-form";
 
-export class Home extends Component {
-  static displayName = Home.name;
+const Home = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: {errors}
+    } = useForm();
+    const [file, setFile] = useState(null);
+    const [message, setMessage] = useState('');
 
-  render() {
-    return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we have also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-      </div>
-    );
-  }
+    const handleFileChange = (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile && selectedFile.name.endsWith('.docx')) {
+            setFile(selectedFile);
+            setMessage('');
+        } else {
+            setFile(null);
+            setMessage('Please select a .docx file');
+        }
+    };
+
+    const onSubmit = async () => {
+        if (!file) {
+            setMessage('Please select a file');
+            return;
+        }
+        ;
+        const formData = new FormData();
+        formData.append('file', file);
+    };
+
+    {
+        return (
+            <div>
+                <h1 className={css.label}>Welcome!</h1>
+                <h1 className={css.label}>It is my test task!</h1>
+                <form onSubmit={handleSubmit(onSubmit)} className={css.main}>
+                    <div className={css.wrap}>
+                        <div className={css.message}>
+                            <p className={css.instruction}>Enter your email:</p>
+                            {errors.email && <p className={css.errorClass}>{errors.email.message}</p>}
+                        </div>
+                        <input {...register("email", {
+                            required: 'Please enter your email',
+                            pattern: {
+                                value: /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/,
+                                message: 'Invalid email address',
+                            },
+                        })}
+                               placeholder="Email"
+                               type="text"
+                        />
+                        <div className={css.message}>
+                            <p className={css.instruction}>Attach file: </p>
+                            {message && <p className={css.errorClass}>{message}</p>}
+                        </div>
+                        <input type="file" accept=".docx" onChange={handleFileChange}/>
+                        <div className={css.myButton}>
+                        <button type="submit">Send</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        );
+    }
 }
+
+export {Home};

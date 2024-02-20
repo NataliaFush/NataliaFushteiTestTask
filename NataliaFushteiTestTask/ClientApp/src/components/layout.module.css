@@ -1,0 +1,11 @@
+.main {
+    height: 100%;
+    width: 80%;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 40px 56px;
+    margin: 0 auto;
+    position: sticky;
+    background-color: #FFFBF5;
+    min-height: 100vh;
+}

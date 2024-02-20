@@ -1,0 +1,56 @@
+.label{
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    color: #025464;
+    font-size: 44px;
+}
+
+.instruction{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #E57C23;
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.errorClass {
+    min-height: 24px;
+    color: red;
+    text-align: center;
+    margin-bottom: -10px;
+}
+
+.wrap{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+
+.message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0px 0px 0px;
+}
+
+.main{
+    display: flex;
+    justify-content: center;
+}
+
+.myButton{
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+}
+button{
+    width: 40%;
+    border-color: #E57C23;
+    border-radius: 5px;
+    height: 35px;
+    color: orange;
+}
+button:hover{
+    background: #ff9800;
+    color: white;
+}
